@@ -1,12 +1,16 @@
+import java.io.BufferedReader;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
-
+import java.lang.*;
 public class ventaentradascine {
     static Random azar= new Random();
     static Scanner teclado= new Scanner(System.in);
     static ArrayList<int[][]> salas = new ArrayList<int[][]>();
+    static ArrayList <Integer>precios = new ArrayList<Integer>();
     static int numeroDeSalas;
+    static int[] precioCombos = {1500,2700,3200,5100,6800};
+    static int[] compras = new int[2];
     static String [] alfabeto = new String [] {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
 
 
@@ -40,6 +44,8 @@ public class ventaentradascine {
             int c= nroAlAzar(26);
             int f = nroAlAzar(100);
             int [][] sala = new int[f][c];
+            int precioSala=ingresarPrecio();
+            precios.add(precioSala);
             salas.add(sala);
         }
     }
@@ -47,10 +53,20 @@ public class ventaentradascine {
     public static void venta(){
         int nrodeSala = elegirpelicula();
         int [][] salaSeleccionada = salas.get(nrodeSala);
+        compras[0]=1;
+        Integer i= precios.get(nrodeSala);
+        int precio = i.intValue();
         mostarSala(salaSeleccionada);
+        mostrarPrecio(nrodeSala);
+        Butaca(salaSeleccionada);
+        ventadeComestibles();
+        hacerBoleta(precio);
+
+    }
+
+    public static void Butaca (int[][] salaSeleccionada){
         boolean disponible = false;
         int filas=-1, columnas=-1;
-
         while(disponible==false){
             filas= ingresarFila(salaSeleccionada)-1;
             columnas= ingresarColumnas(salaSeleccionada)-1;
@@ -59,9 +75,8 @@ public class ventaentradascine {
                 System.out.print("la butaca está ocupada");
             }
         }
-
         ocuparbutaca(salaSeleccionada,filas,columnas);
-        mostarSala(salaSeleccionada);
+
     }
 
     public static int ingresarColumnas(int [][] sala){
@@ -163,6 +178,36 @@ public class ventaentradascine {
 
     public static int nroAlAzar(int max){
         return azar.nextInt(max);
+    }
+
+    public static int ingresarPrecio(){
+        return azar.nextInt(5000-2000);
+    }
+
+    public static void mostrarPrecio(int i){
+        System.out.print("El Precio de una entrada en la sala"+(i+1)+"es de: $"+precios.get(i));
+    }
+
+    public static void hacerBoleta(int precioEntrada){
+
+    }
+
+    public static void ventadeComestibles(){
+        System.out.println("Agrege un combo:");
+        mostrarcombos();
+        System.out.println("Ingrese el número de combo que desea ingresar");
+        System.out.println("Ingrese 0 si no desea agregar combo");
+        int combo = ingresarCombo();
+        compras[1]= combo-1;
+    }
+
+    public static void mostrarcombos (){
+        System.out.println("combo 1: bebida pequeña + palomitas pequeñas"+precioCombos [0]);
+        System.out.println("combo 2: bebida pequeña + palomitas medianas"+precioCombos[1]);
+        System.out.println("combo 3: 2 bebidas grandes + palomitas medianas"+precioCombos[2]);
+        System.out.println("combo 4: 2 bebidas grandes + palomitas grandes"+precioCombos[3]);
+        System.out.println("combo 5: 4 bebidas pequeñas + 2 palomitas grandes"+precioCombos[4]);
+
     }
 
 
